@@ -1,11 +1,11 @@
-import Ractive from 'ractive';
+import RactiveBridge from "../bridge";
 import template from './github-user-tpl.html';
 import store from '../store';
-import { interval, fromEventPattern } from 'rxjs'
+import { interval } from 'rxjs'
 import {map, debounce, filter} from 'rxjs/operators';
 import {fetchUser, getUser} from "../actions/github-user-actions";
 
-const githubUserComponent = Ractive.extend({
+const githubUserComponent = RactiveBridge.extend({
   template: template,
   on: {
     init() {
@@ -14,10 +14,10 @@ const githubUserComponent = Ractive.extend({
         this.setLocal(store.getState().github);
       });
 
-      this.stream('inputText')
+      this.observeStream('inputText')
         .pipe(
           debounce(() => interval(500)),
-          map(([current,,]) => current),
+          map(([current,,,]) => current),
           filter((current) => current.length),
         ).subscribe((text) => store.dispatch(fetchUser(text)));
     },
@@ -25,11 +25,6 @@ const githubUserComponent = Ractive.extend({
       const data = context.event.target.dataset;
       if ('id' in data) store.dispatch(getUser(data.id))
     },
-  },
-  stream(eventName) {
-    return fromEventPattern(
-      (h) => { this.observe(eventName, h) },
-    )
   },
   setLocal({ users, currentUser, isFetching, errors }) {
     return this.set({ users, currentUser, isFetching, errors });

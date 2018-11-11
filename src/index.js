@@ -1,12 +1,12 @@
-import Ractive from 'ractive';
+import RactiveBridge from "./bridge";
 import template from './root-tpl.html';
 import store from './store';
 import { ping } from './actions/ping-actions'
 import githubUserComponent from "./components/github-user";
 
 document.addEventListener('DOMContentLoaded', () => {
-  Ractive.components.githubUsers = githubUserComponent;
-  const root = new Ractive({
+  RactiveBridge.components.githubUsers = githubUserComponent;
+  const root = new RactiveBridge({
     template: template,
     el: '#root',
     oninit() {
