@@ -12,9 +12,9 @@ export default class RactiveBridge extends Ractive {
     return fromEventPattern(
       (h) => { this.on(eventName, h) },
       (h) => { this.off(eventName, h) },
-      (context) => ({
+      (context, ...args) => ({
         context,
-        arguments: Array.prototype.slice.call(arguments, 1)
+        args,
       }),
     )
   }
