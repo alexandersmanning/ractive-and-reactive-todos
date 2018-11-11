@@ -1,0 +1,25 @@
+<div>
+  <div>Github Users</div>
+  <input value="{{ inputText }}"/><span>{{ isFetching }}</span>
+  {{ #errors }}
+    <div>
+      <span>{{ message }}</span>
+    </div>
+  {{ /errors }}
+  <div on-click="loginSelected">
+    {{ #each users: num }}
+      <div data-id="{{ num }}">{{ login }}</div>
+    {{ /each }}
+  </div>
+  <div>-------------</div>
+  <div>
+    <div>Selected User's Information</div>
+    {{ #currentUser }}
+      <div>Username: {{ login }}</div>
+      <div>Score: {{ score }}</div>
+      <img src="{{ avatar_url }}" />
+    {{ else }}
+      <span>No user selected</span>
+    {{ /currentUser }}
+  </div>
+</div>
