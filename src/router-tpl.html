@@ -1,2 +1,8 @@
+{{ #with isUser as userFlag }}
 {{ #isPing }}<ping />{{ /isPing }}
-{{ #isGithub }}<github />{{ /isGithub }}
+{{ #isGithub }}
+  <github>
+    {{ #userFlag }}<div>USER</div>{{/userFlag}}
+  </github>
+{{ /isGithub }}
+{{/with}}
