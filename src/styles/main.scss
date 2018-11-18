@@ -1,0 +1,7 @@
+$font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@mixin standard-text($font-size: 14px) {
+  font-family: $font-family;
+  color: rgb(54, 65, 73);
+  font-size: $font-size;
+}
