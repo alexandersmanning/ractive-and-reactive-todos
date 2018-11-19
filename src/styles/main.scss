@@ -1,7 +1,29 @@
-$font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+// Fonts
+$body-font-family: "Avenir Book", Helvetica, Arial, sans-serif;
+$header-font-family: "Pacifico", cursive;
+
+// Colors
+$main-color: rgb(54, 65, 73);
 
 @mixin standard-text($font-size: 14px) {
-  font-family: $font-family;
-  color: rgb(54, 65, 73);
+  font-family: $body-font-family;
+  color: $main-color;
   font-size: $font-size;
+}
+
+@mixin header-text($font-size: 22px) {
+  font-family: $header-font-family;
+  color: $main-color;
+  font-size: $font-size;
+}
+
+@mixin flexed($justify: flex-start, $align: flex-start) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+body {
+  margin: 0;
+  padding: 0;
 }

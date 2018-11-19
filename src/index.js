@@ -1,17 +1,19 @@
 import RactiveBridge from "./bridge";
 
-import template from './root-tpl.html';
-import routerComponent from './router';
-import navLinkComponent from "./components/nav-link";
-
+import Header from './components/title-bar';
+import TodoList from './components/todo-list';
 
 document.addEventListener('DOMContentLoaded', () => {
   const root = new RactiveBridge({
-    template: template,
+    template: `
+      <Header/>
+      <TodoList />
+      <div>Sidebar</div>
+    `,
     el: '#root',
     components: {
-      router: routerComponent,
-      navLink: navLinkComponent,
-    },
+      Header,
+      TodoList,
+    }
   })
 });
