@@ -6,6 +6,8 @@ import { interval } from 'rxjs';
 import store from '../store';
 import { getList, updateTodoItem } from '../actions/todo-actions';
 
+import TodoDetail from './todo-detail'
+
 const COMPLETE = 'COMPLETE';
 const INCOMPLETE = 'INCOMPLETE';
 
@@ -13,31 +15,12 @@ export default RactiveBridge.extend({
   data() {
     return {
       viewType: INCOMPLETE,
+      sidebarOpen: false,
     }
   },
-  template: `
-    <div>
-      <div>List of items</div>
-      <div>
-        <label>Completed<input type="radio" name="{{ viewType }}" value="COMPLETE"/></label>
-        <label>Incomplete<input type="radio" name="{{ viewType }}" value="INCOMPLETE"/></label>
-        <label>All<input type="radio" name="{{ viewType }}" value="ALL"/></label>
-      </div>
-      <label>
-        <span hidden>Search Todos</span>
-        <input value="{{todoSearch}}" placeholder="Search..."/>
-      </label>
-      <div>Loading: {{ isLoading }}</div>
-      {{ #each todoList as item }}
-        <div>
-          <label>
-            <input type="checkbox" checked="{{ complete }}" on-change="['updateStatus', item]"/>
-            <span>{{ name }}</span>
-          </label>
-        </div>
-      {{ /each }}
-    </div>
-  `,
+  components: {
+    TodoDetail,
+  },
   oninit() {
     // get list of todos
     store.subscribe(() => {
@@ -71,6 +54,13 @@ export default RactiveBridge.extend({
       .subscribe((item) => {
         store.dispatch(updateTodoItem(item));
       })
+
+    this.onStream('setSelected')
+      .pipe(map(({ context, args }) => {
+        const [item] = args;
+        return item;
+      }))
+      .subscribe(item => this.set('selectedItem', item));
   },
   setView(viewState) {
     const { list } = store.getState().todos;
@@ -90,4 +80,28 @@ export default RactiveBridge.extend({
 
     this.set({ todoList });
   },
+  template: `
+    <div>
+      <div>List of items</div>
+      <div>
+        <label>Completed<input type="radio" name="{{ viewType }}" value="COMPLETE"/></label>
+        <label>Incomplete<input type="radio" name="{{ viewType }}" value="INCOMPLETE"/></label>
+        <label>All<input type="radio" name="{{ viewType }}" value="ALL"/></label>
+      </div>
+      <label>
+        <span hidden>Search Todos</span>
+        <input value="{{todoSearch}}" placeholder="Search..."/>
+      </label>
+      <div>Loading: {{ isLoading }}</div>
+      {{ #each todoList as item }}
+        <div>
+          <input type="checkbox" checked="{{ complete }}" on-change="['updateStatus', item]"/>
+          <span on-click="['setSelected', item]">{{ name }}</span>
+        </div>
+      {{ /each }}
+    </div>
+    {{ #selectedItem }}
+      <TodoDetail item="{{.}}" />
+    {{ /selectedItem }}
+  `,
 });
