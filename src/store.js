@@ -10,7 +10,7 @@ import todoReducer from "./reducers/todo-reducer";
 // Middleware
 import { pingEpic } from './middleware/ping-middleware';
 import { fetchEpic, setUserEpic } from "./middleware/github-user-middleware";
-import { todoGetListEpic } from './middleware/todo-middleware';
+import {todoGetListEpic, todoUpdateItem} from './middleware/todo-middleware';
 
 const epicMiddleware = createEpicMiddleware();
 const rootReducer = combineReducers({
@@ -24,6 +24,6 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(epicMiddleware))
 );
 
-epicMiddleware.run(combineEpics(pingEpic, fetchEpic, setUserEpic, todoGetListEpic));
+epicMiddleware.run(combineEpics(pingEpic, fetchEpic, setUserEpic, todoGetListEpic, todoUpdateItem));
 
 export default store;

@@ -1,10 +1,10 @@
 import RactiveBridge from "../bridge";
 
-import { map, startWith, debounce } from 'rxjs/operators';
+import { map, debounce } from 'rxjs/operators';
 import { interval } from 'rxjs';
 
 import store from '../store';
-import { getList } from '../actions/todo-actions';
+import { getList, updateTodoItem } from '../actions/todo-actions';
 
 const COMPLETE = 'COMPLETE';
 const INCOMPLETE = 'INCOMPLETE';
@@ -24,13 +24,16 @@ export default RactiveBridge.extend({
         <label>All<input type="radio" name="{{ viewType }}" value="ALL"/></label>
       </div>
       <label>
-         Search TODOs: 
-        <input value="{{todoSearch}}"/>
+        <span hidden>Search Todos</span>
+        <input value="{{todoSearch}}" placeholder="Search..."/>
       </label>
       <div>Loading: {{ isLoading }}</div>
       {{ #each todoList as item }}
         <div>
-          <span>{{ name }}</span>
+          <label>
+            <input type="checkbox" checked="{{ complete }}" on-change="['updateStatus', item]"/>
+            <span>{{ name }}</span>
+          </label>
         </div>
       {{ /each }}
     </div>
@@ -58,7 +61,16 @@ export default RactiveBridge.extend({
         map(([current,,]) => current)
       ).subscribe((viewState) => {
         this.setView(viewState);
-    })
+    });
+
+    this.onStream('updateStatus')
+      .pipe(map(({ context, args }) => {
+        const [item] = args;
+        return item;
+      }))
+      .subscribe((item) => {
+        store.dispatch(updateTodoItem(item));
+      })
   },
   setView(viewState) {
     const { list } = store.getState().todos;
