@@ -7,6 +7,8 @@ import store from '../store';
 import { getList, updateTodoItem } from '../actions/todo-actions';
 
 import TodoDetail from './todo-detail'
+import Sidebar from './sidebar';
+import {closeSidebar, openSidebar} from "../actions/sidebar-actions";
 
 const COMPLETE = 'COMPLETE';
 const INCOMPLETE = 'INCOMPLETE';
@@ -20,9 +22,10 @@ export default RactiveBridge.extend({
   },
   components: {
     TodoDetail,
+    Sidebar,
   },
   oninit() {
-    // get list of todos
+    // get list of to do items
     store.subscribe(() => {
       const { list, isFetching } = store.getState().todos;
       this.set({ 'isLoading': isFetching });
@@ -53,14 +56,22 @@ export default RactiveBridge.extend({
       }))
       .subscribe((item) => {
         store.dispatch(updateTodoItem(item));
-      })
+      });
 
     this.onStream('setSelected')
       .pipe(map(({ context, args }) => {
         const [item] = args;
         return item;
       }))
-      .subscribe(item => this.set('selectedItem', item));
+      .subscribe(item => {
+        this.set('selectedItem', item).then(() => {
+          store.dispatch(openSidebar());
+        });
+      });
+  },
+  onteardown() {
+    // move this to router action
+    store.dispatch(closeSidebar());
   },
   setView(viewState) {
     const { list } = store.getState().todos;
@@ -100,8 +111,8 @@ export default RactiveBridge.extend({
         </div>
       {{ /each }}
     </div>
-    {{ #selectedItem }}
-      <TodoDetail item="{{.}}" />
-    {{ /selectedItem }}
+    <Sidebar>
+      <TodoDetail item="{{selectedItem}}" />
+    </Sidebar>
   `,
 });

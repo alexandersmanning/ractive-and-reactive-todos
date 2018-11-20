@@ -6,6 +6,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import pingReducer from './reducers/ping-reducer';
 import githubUserReducer from "./reducers/github-user-reducer";
 import todoReducer from "./reducers/todo-reducer";
+import sidebarReducer from "./reducers/sidebar-reducer";
 
 // Middleware
 import { pingEpic } from './middleware/ping-middleware';
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   ping: pingReducer,
   github: githubUserReducer,
   todos: todoReducer,
+  sidebar: sidebarReducer,
 });
 
 const store = createStore(

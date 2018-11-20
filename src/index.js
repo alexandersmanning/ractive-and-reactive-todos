@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     template: `
       <Header/>
       <TodoList />
-      <div>Sidebar</div>
     `,
     el: '#root',
     components: {
