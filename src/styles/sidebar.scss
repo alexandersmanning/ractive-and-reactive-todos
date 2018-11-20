@@ -1,0 +1,23 @@
+@import "main";
+
+.sidebar__container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0.15);
+}
+
+.sidebar__body {
+  width: 500px;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-color: white;
+  position: absolute;
+  border-right: 1px;
+  border-color: lightgrey;
+  box-shadow: -3px 0px 5px 0px rgba(0,0,0,0.15);
+}
+

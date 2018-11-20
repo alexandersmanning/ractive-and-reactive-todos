@@ -1,4 +1,6 @@
 import RactiveBridge from '../bridge';
+import style from '../styles/sidebar.scss';
+
 import store from '../store';
 
 import { closeSidebar } from '../actions/sidebar-actions'
@@ -6,13 +8,16 @@ import { closeSidebar } from '../actions/sidebar-actions'
 export default RactiveBridge.extend({
   template: `
     {{ #if open }}
-    <div>
+    <div
+      fade-in-out
+      class="${style.sidebar__container}"
+      on-click="closeSidebar"
+    ></div>
+    <div class="${style.sidebar__body}" fly-in-out="{x: 500 }">
       <div>
-        <div>
-          <div on-click="closeSidebar">X</div>
-        </div>
-        <div>{{yield}}</div>
+        <div on-click="closeSidebar">X</div>
       </div>
+      <div>{{yield}}</div>
     </div>
     {{ /if }}
   `,
@@ -22,7 +27,7 @@ export default RactiveBridge.extend({
   oninit() {
     store.subscribe(() => {
       const { open } = store.getState().sidebar;
-      this.set({ open });
+      this.set('open', open);
     });
 
     this.onStream('closeSidebar')
