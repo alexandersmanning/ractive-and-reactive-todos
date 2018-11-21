@@ -5,10 +5,13 @@ import { interval } from 'rxjs';
 
 import store from '../store';
 import { getList, updateTodoItem } from '../actions/todo-actions';
+import {closeSidebar, openSidebar} from "../actions/sidebar-actions";
 
 import TodoDetail from './todo-detail'
 import Sidebar from './sidebar';
-import {closeSidebar, openSidebar} from "../actions/sidebar-actions";
+import Dropdown from './dropdown';
+
+import style from '../styles/todo-body.scss';
 
 const COMPLETE = 'COMPLETE';
 const INCOMPLETE = 'INCOMPLETE';
@@ -23,6 +26,7 @@ export default RactiveBridge.extend({
   components: {
     TodoDetail,
     Sidebar,
+    Dropdown
   },
   oninit() {
     // get list of to do items
@@ -42,12 +46,14 @@ export default RactiveBridge.extend({
         store.dispatch(getList(text))
     });
 
-    this.observeStream('viewType')
+    this.onStream('updateViewType')
       .pipe(
-        map(([current,,]) => current)
-      ).subscribe((viewState) => {
+        map(({ context, args }) => args[0])
+      )
+      .subscribe((viewState) => {
+        this.set('viewType', viewState);
         this.setView(viewState);
-    });
+      });
 
     this.onStream('updateStatus')
       .pipe(map(({ context, args }) => {
@@ -92,24 +98,34 @@ export default RactiveBridge.extend({
     this.set({ todoList });
   },
   template: `
-    <div>
-      <div>List of items</div>
+    <div class="${style.body__container}">
       <div>
-        <label>Completed<input type="radio" name="{{ viewType }}" value="COMPLETE"/></label>
-        <label>Incomplete<input type="radio" name="{{ viewType }}" value="INCOMPLETE"/></label>
-        <label>All<input type="radio" name="{{ viewType }}" value="ALL"/></label>
-      </div>
-      <label>
-        <span hidden>Search Todos</span>
-        <input value="{{todoSearch}}" placeholder="Search..."/>
-      </label>
-      <div>Loading: {{ isLoading }}</div>
-      {{ #each todoList as item }}
-        <div>
-          <input type="checkbox" checked="{{ complete }}" on-change="['updateStatus', item]"/>
-          <span on-click="['setSelected', item]">{{ name }}</span>
+        <div class="${style.header__container}">
+          <Dropdown
+            on-dropdownSelect="updateViewType"
+            currentSelected="{{ viewType }}"
+            items="[
+              { value: '${INCOMPLETE}', label: 'Incomplete'},
+              { value: '${COMPLETE}', label: 'Completed'},
+              { value: 'ALL', label: 'All'}
+            ]"
+          ></Dropdown>
+          <span style="margin-left: 10px;">Items</span>
         </div>
-      {{ /each }}
+        <div>
+          <label>
+            <span hidden>Search Todos</span>
+            <input value="{{todoSearch}}" placeholder="Search..."/>
+          </label>
+          <div>Loading: {{ isLoading }}</div>
+          {{ #each todoList as item }}
+            <div fly-in-out>
+              <input type="checkbox" checked="{{ complete }}" on-change="['updateStatus', item]"/>
+              <span on-click="['setSelected', item]">{{ name }}</span>
+            </div>
+          {{ /each }}
+        </div>
+      </div>
     </div>
     <Sidebar>
       <TodoDetail item="{{selectedItem}}" />

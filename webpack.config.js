@@ -27,7 +27,7 @@ module.exports = {
         use: ["html-loader?interpolate=require!"]
       },
       {
-        test: /\.scss$/,
+        test: [/\.scss$/, /\.sass$/],
         use: [
           {
             loader: 'style-loader',

@@ -1,0 +1,11 @@
+@import "main";
+
+.body__container {
+  @include flexed(center, center);
+}
+
+.header__container {
+  @include header-text(35px);
+  @include flexed(flex-start, center);
+  margin-top: 35px;
+}

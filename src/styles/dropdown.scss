@@ -1,0 +1,51 @@
+@import 'main';
+
+.dropdown {
+  position: relative;
+  width: 220px;
+}
+
+.dropdown__button {
+  @include flexed(space-between, center);
+  border: 1px solid lightgrey;
+  padding: 5px 10px;
+  border-radius: 2px;
+  box-shadow: 1px 1px 1px 0px rgba(0,0,0,0.10);
+  cursor: pointer;
+  &:hover {
+    background-color: lighten(lightgrey, 15%);
+  }
+  &:active {
+    box-shadow: inset 1px 1px 1px 0px rgba(0,0,0,0.10);
+  }
+}
+
+.dropdown__body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% - 5px);
+  background: white;
+  border: 1px solid lightgrey;
+  border-radius: 2px;
+}
+
+.dropdown__body--visible {
+  visibility: visible;
+}
+
+.dropdown__body--hidden {
+  visibility: hidden;
+}
+
+.dropdown__item {
+  padding: 10px;
+  border-bottom: 1px;
+  cursor: pointer;
+  &:hover {
+    background: lighten(lightgrey, 15%);
+  }
+  &:last-child {
+    border-bottom: none;
+  }
+}
