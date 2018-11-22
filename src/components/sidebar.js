@@ -14,8 +14,8 @@ export default RactiveBridge.extend({
       on-click="closeSidebar"
     ></div>
     <div class="${style.sidebar__body}" fly-in-out="{x: 500 }">
-      <div>
-        <div on-click="closeSidebar">X</div>
+      <div class="${style.sidebar__header}">
+        <div class="${style["sidebar__header-close"]} fas fa-times" on-click="closeSidebar"></div>
       </div>
       <div>{{yield}}</div>
     </div>

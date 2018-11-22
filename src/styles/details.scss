@@ -1,0 +1,19 @@
+@import "main";
+
+.detail__input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail__input {
+  flex: 1;
+  @include input(inherit);
+}
+
+.detail__textarea {
+  flex: 1;
+  @include input(inherit);
+  resize: none;
+  height: 300px;
+}
+

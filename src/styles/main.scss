@@ -5,6 +5,7 @@ $header-font-family: 'Josefin Slab', serif;
 
 // Colors
 $main-color: rgb(54, 65, 73);
+$highlight-color: rgba(30, 0, 200, 0.75);
 
 @mixin standard-text($font-size: 14px) {
   font-family: $body-font-family;
@@ -25,6 +26,19 @@ $main-color: rgb(54, 65, 73);
   align-items: $align;
 }
 
+@mixin input($width: 150px) {
+  outline: none;
+  width: $width;
+  padding: 5px 10px;
+  border: 1px solid lightgrey;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  @include standard-text();
+  &:active, &:focus {
+    box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.1);
+  }
+}
+
 .small-icon {
   font-size: 12px;
 }
@@ -38,3 +52,4 @@ body {
   padding: 0;
   @include standard-text();
 }
+

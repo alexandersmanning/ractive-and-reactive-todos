@@ -19,5 +19,28 @@
   border-right: 1px;
   border-color: lightgrey;
   box-shadow: -3px 0px 5px 0px rgba(0,0,0,0.15);
+  padding: 20px;
+  box-sizing: border-box;
 }
 
+.sidebar__header {
+  @include flexed(flex-end, center);
+}
+
+.sidebar__header-close {
+  border: 2px solid transparent;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  padding: 2px 4px;
+  cursor: pointer;
+  &:hover {
+    color: $highlight-color;
+    border-color: $highlight-color;
+  }
+  &:active {
+    color: $highlight-color;
+    border-color: $highlight-color;
+    box-shadow: inset 1px 1px 1px 0px rgba(0, 0, 0, 0.4);
+  }
+}

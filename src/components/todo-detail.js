@@ -1,5 +1,6 @@
 import RactiveBridge from "../bridge";
 import store from '../store';
+import style from '../styles/details.scss';
 
 import {updateTodoItem} from "../actions/todo-actions";
 
@@ -20,9 +21,10 @@ export default RactiveBridge.extend({
     {{ #item }}
     <div>
       <div>
-        <label>
-          <span>Name: </span>
+        <label class="${style["detail__input-container"]}">
+          <div>Name</div>
           <input
+            class="${style.detail__input}"
             type="text"
             value="{{name}}"
             on-input="['updateItem', this]"
@@ -30,13 +32,9 @@ export default RactiveBridge.extend({
         </label>
       </div>
       <div>
-        <label>
-          <span>Details: </span>
-          <input
-            type="text"
-            value="{{description}}"
-            on-input="['updateItem', this]"
-          />
+        <label class="${style["detail__input-container"]}">
+          <div>Details</div>
+          <textarea on-input="['updateItem', this]" class="${style.detail__textarea}">{{ description }}</textarea>
         </label>
       </div>
     </div>
